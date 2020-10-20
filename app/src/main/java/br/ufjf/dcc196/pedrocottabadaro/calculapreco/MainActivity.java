@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import java.text.NumberFormat;
@@ -16,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView textViewPrecoFinal;
     private CheckBox checkBoxExpresso;
     private CheckBox checkBoxPresente;
+    private RadioGroup radioGroupPagamento;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         textViewPrecoFinal=findViewById(R.id.textViewPrecoFinal);
         checkBoxExpresso=findViewById(R.id.checkBoxExpresso);
         checkBoxPresente=findViewById(R.id.checkBoxPresente);
+        radioGroupPagamento=findViewById(R.id.radioGroupPagamento);
 
     }
 
@@ -36,6 +39,20 @@ public class MainActivity extends AppCompatActivity {
         }
         if(checkBoxPresente.isChecked()){
             precoFinal+=5.0;
+        }
+
+        switch(radioGroupPagamento.getCheckedRadioButtonId()){
+
+            case R.id.radioButtonCartao1x:
+                precoFinal+=0.03*precoProduto;
+                break;
+            case R.id.radioButtonCartao2x:
+                precoFinal+=0.08*precoProduto;
+                break;
+            case R.id.radioButtonCartao3x:
+                precoFinal+=0.13*precoProduto;
+                break;
+
         }
         textViewPrecoFinal.setText(NumberFormat.getCurrencyInstance(locale).format(precoFinal));
 
