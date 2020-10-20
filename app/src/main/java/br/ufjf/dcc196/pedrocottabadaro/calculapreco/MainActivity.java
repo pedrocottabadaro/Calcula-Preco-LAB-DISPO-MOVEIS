@@ -3,8 +3,10 @@ package br.ufjf.dcc196.pedrocottabadaro.calculapreco;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -28,12 +30,46 @@ public class MainActivity extends AppCompatActivity {
         checkBoxPresente=findViewById(R.id.checkBoxPresente);
         radioGroupPagamento=findViewById(R.id.radioGroupPagamento);
 
+        CompoundButton.OnCheckedChangeListener ouvinteCheckbox=new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                calcular(buttonView);
+            }
+        };
+
+        checkBoxExpresso.setOnCheckedChangeListener(ouvinteCheckbox);
+        checkBoxPresente.setOnCheckedChangeListener(ouvinteCheckbox);
+
+        radioGroupPagamento.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                calcular(group);
+            }
+        });
+
+
+        editTextPrecoProduto.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                calcular(v);
+                return false;
+            }
+        });
     }
 
     public void calcular(View view){
-        Double precoProduto=Double.parseDouble(editTextPrecoProduto.getText().toString());
+        Double precoProduto=0.0;
+        Double precoFinal=0.0;
+
+        try {
+           precoProduto=Double.parseDouble(editTextPrecoProduto.getText().toString());
+           precoFinal=precoProduto+10.0;
+
+        }
+        catch (Exception e){
+
+        }
         Locale locale= new Locale( "pt", "BR");
-        Double precoFinal=precoProduto+10.0;
         if(checkBoxExpresso.isChecked()){
             precoFinal+=10.0;
         }
